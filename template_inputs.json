@@ -1,0 +1,7 @@
+{
+  "project_name": "rent-airbnb",
+  "project_description": "Data engineering assessment: compare Amsterdam postcodes for Airbnb vs long-term rental profitability using Spark Declarative Pipelines and Medallion architecture.",
+  "author": "Karel Deprez",
+  "email": "karel.deprez@hotmail.com",
+  "setup_type": "minimal"
+}
