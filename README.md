@@ -1,1 +1,59 @@
 # rent-airbnb
+
+![Databricks Runtime](https://img.shields.io/badge/Databricks%20Runtime-16.4--LTS-%231B3139)
+[![python](https://img.shields.io/badge/python-3.12-g)](https://www.python.org)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+
+Data engineering assessment: compare Amsterdam postcodes for Airbnb vs long-term rental profitability using Spark Declarative Pipelines and Medallion architecture.
+
+The `rent-airbnb` project was generated from [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates) version `0.20.0`.
+
+## Prerequisites
+
+Ensure you have the following tools installed:
+
+- **[uv](https://docs.astral.sh/uv/)** - Fast Python package manager and project management
+- **[git](https://git-scm.com/)** - Version control system
+- **[Databricks CLI](https://docs.databricks.com/dev-tools/cli/index.html)** - Command-line interface for Databricks operations
+- **[just](https://just.systems/man/en/packages.html)** - Build automation tool (very convenient during development)
+
+**Platform Support**: This project is designed for **Linux**, **macOS** and **Windows**.
+
+## Quick Start
+
+Set up a fully configured development environment by running:
+
+```bash
+just
+```
+
+You may need to update the `PROFILE_NAME` variable in the `.justfile` to match your Databricks profile name.  In addition, ensure that the host URL in `databricks.yml` matches your Databricks profile URL.
+
+Additional `just` commands are available for various tasks:
+
+```bash
+just lint     # Run linting
+just test     # Run tests
+just validate # Validate bundle on default workspace
+just deploy   # Deploy bundle to default workspace
+just destroy  # Destroy bundle resources on default workspace
+```
+
+Run `just list` to see all available commands.
+
+## Documentation
+
+Comprehensive documentation can be found in the [documentation](docs/README.md).
+
+- **[Getting Started](docs/getting_started.md)** - Set up your development environment
+- **[Development](docs/development.md)** - Project structure, configuration, code quality, and (testing on) Databricks Connect
+- **[Bundle Deployment](docs/bundle_deployment.md)** - Databricks Asset Bundle deployment, Git strategy, and CI/CD
+- **[Coding Standards](docs/coding_standard.md)** - Code style and conventions
+
+## Troubleshooting
+
+- Refer to the [Databricks documentation](https://docs.databricks.com/dev-tools/bundles/index.html) for bundle-specific questions

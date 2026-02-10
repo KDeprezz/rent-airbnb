@@ -1,0 +1,44 @@
+resources:
+  jobs:
+    example-pipeline-job:
+      name: example-pipeline-job
+
+      tasks:
+        - task_key: pipeline-task
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.example-pipeline.id}
+
+  pipelines:
+    example-pipeline:
+      name: example-pipeline
+      # catalog: main  # configure catalog in Unity Catalog
+      schema: {{template `package_name` .}}_${bundle.environment}
+      root_path: ../notebooks/pipelines/example-pipeline
+
+      libraries:
+        - glob:
+            include: ../notebooks/pipelines/example-pipeline/**
+
+      environment:
+        dependencies:
+          # Install the wheel file built from pyproject.toml.
+          # See: https://docs.databricks.com/aws/en/ldp/developer/external-dependencies
+          - ${var.wheel_path}
+
+      clusters:
+       - label: default
+         num_workers: 1
+         node_type_id: {{if (eq .cloud_provider "azure")}}Standard_D4s_v3{{end}}{{if (eq .cloud_provider "aws")}}i3.xlarge{{end}}
+
+      configuration:
+        table: nyctaxi
+        autoloader_path: dbfs:/databricks-datasets/nyctaxi-with-zipcodes/subsampled
+        pipelines.clusterShutdown.delay: 20min
+
+      continuous: false
+      photon: false
+
+      edition: ADVANCED
+      channel: CURRENT
+
+      serverless: false

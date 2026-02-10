@@ -1,0 +1,44 @@
+resources:
+  jobs:
+    example-job:
+      name: example-job
+
+      schedule:
+        # Run every day at 8:37 AM
+        quartz_cron_expression: 44 37 8 * * ?
+        timezone_id: Europe/Amsterdam
+
+      email_notifications:
+        on_failure:
+          - notifications@example.com
+
+      parameters:
+        - name: wheel_path
+          default: ${var.wheel_path}
+
+      tasks:
+        - task_key: notebook_task
+          job_cluster_key: job_cluster
+          libraries:
+          - whl: ../dist/*.whl
+          notebook_task:
+            notebook_path: ../notebooks/example_job.py
+        - task_key: wheel_task
+          depends_on:
+            - task_key: notebook_task
+          job_cluster_key: job_cluster
+          python_wheel_task:
+            package_name: {{template `package_name` .}}
+            entry_point: main
+          libraries:
+            # By default we just include the .whl file generated for the {{template `package_name` .}} package.
+            # See https://docs.databricks.com/dev-tools/bundles/library-dependencies.html
+            # for more information on how to add other libraries.
+            - whl: ../dist/*.whl
+
+      job_clusters:
+        - job_cluster_key: job_cluster
+          new_cluster:
+            spark_version: ${var.spark_version}
+            node_type_id: {{if (eq .cloud_provider "azure")}}Standard_D3_v2{{end}}{{if (eq .cloud_provider "aws")}}i3.xlarge{{end}}
+            num_workers: 1
