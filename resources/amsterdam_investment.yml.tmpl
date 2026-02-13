@@ -1,0 +1,35 @@
+resources:
+  pipelines:
+    amsterdam_investment:
+      name: rent-airbnb-${bundle.environment}
+      serverless: true
+      channel: CURRENT
+
+      catalog: workspace
+      target: rent_airbnb
+
+      libraries:
+        - glob:
+            include: ../notebooks/pipelines/**
+
+      configuration:
+        input_root: "/Volumes/workspace/rent_airbnb/invest_input"
+        output_root: "/Volumes/workspace/rent_airbnb/invest_output"
+        occupancy_rate: "0.65"
+        days_per_year: "365"
+        city_filter: "amsterdam"
+
+  jobs:
+    amsterdam_investment_job:
+      name: rent-airbnb-job-${bundle.environment}
+      tasks:
+        - task_key: refresh_pipeline
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.amsterdam_investment.id}
+
+        - task_key: export_parquet
+          depends_on:
+            - task_key: refresh_pipeline
+          notebook_task:
+            notebook_path: ../notebooks/90_export_parquet.py
+          environment_key: serverless

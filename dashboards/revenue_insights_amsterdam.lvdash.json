@@ -1,0 +1,372 @@
+{
+  "datasets": [
+    {
+      "name": "e651438c",
+      "displayName": "gold_postcode_dashboard",
+      "queryLines": [
+        "SELECT * FROM workspace.rent_airbnb.gold_postcode_dashboard"
+      ]
+    },
+    {
+      "name": "3edd9563",
+      "displayName": "Top Twenty Postcodes by Airbnb Revenue in Europe",
+      "queryLines": [
+        "SELECT pc4, airbnb_avg_annual_rev_eur\r\n",
+        "FROM workspace.rent_airbnb.gold_postcode_dashboard\r\n",
+        "WHERE airbnb_avg_annual_rev_eur IS NOT NULL\r\n",
+        "ORDER BY airbnb_avg_annual_rev_eur DESC\r\n",
+        "LIMIT 20;\r\n"
+      ]
+    },
+    {
+      "name": "230777ac",
+      "displayName": "Postcode Annual Revenue and Listings Comparison",
+      "queryLines": [
+        "SELECT\r\n",
+        "  pc4,\r\n",
+        "  airbnb_avg_annual_rev_eur,\r\n",
+        "  rentals_avg_annual_rev_eur,\r\n",
+        "  delta_avg_annual_rev_eur,\r\n",
+        "  airbnb_listings,\r\n",
+        "  rental_listings\r\n",
+        "FROM workspace.rent_airbnb.gold_postcode_dashboard\r\n",
+        "WHERE airbnb_avg_annual_rev_eur IS NOT NULL\r\n",
+        "  AND rentals_avg_annual_rev_eur IS NOT NULL;\r\n"
+      ]
+    },
+    {
+      "name": "3de38d1c",
+      "displayName": "Airbnb Coverage Analysis Dataset",
+      "queryLines": [
+        "SELECT data_coverage, COUNT(*) AS pc4_count\r\n",
+        "FROM workspace.rent_airbnb.gold_postcode_dashboard\r\n",
+        "GROUP BY data_coverage\r\n",
+        "ORDER BY pc4_count DESC;\r\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "7f11cfd4",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "70c26baf",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e651438c",
+                  "fields": [
+                    {
+                      "name": "recommended_strategy",
+                      "expression": "`recommended_strategy`"
+                    },
+                    {
+                      "name": "latitude",
+                      "expression": "`latitude`"
+                    },
+                    {
+                      "name": "longitude",
+                      "expression": "`longitude`"
+                    },
+                    {
+                      "name": "pc4",
+                      "expression": "`pc4`"
+                    },
+                    {
+                      "name": "airbnb_avg_annual_rev_eur",
+                      "expression": "`airbnb_avg_annual_rev_eur`"
+                    },
+                    {
+                      "name": "rentals_avg_annual_rev_eur",
+                      "expression": "`rentals_avg_annual_rev_eur`"
+                    },
+                    {
+                      "name": "airbnb_listings",
+                      "expression": "`airbnb_listings`"
+                    },
+                    {
+                      "name": "rental_listings",
+                      "expression": "`rental_listings`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": false
+              },
+              "widgetType": "symbol-map",
+              "encodings": {
+                "coordinates": {
+                  "latitude": {
+                    "fieldName": "latitude"
+                  },
+                  "longitude": {
+                    "fieldName": "longitude"
+                  }
+                },
+                "color": {
+                  "fieldName": "recommended_strategy",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "size": {
+                  "fieldName": "airbnb_avg_annual_rev_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "pc4"
+                  },
+                  {
+                    "fieldName": "airbnb_avg_annual_rev_eur"
+                  },
+                  {
+                    "fieldName": "rentals_avg_annual_rev_eur"
+                  },
+                  {
+                    "fieldName": "airbnb_listings"
+                  },
+                  {
+                    "fieldName": "rental_listings"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "3e65ad34",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3edd9563",
+                  "fields": [
+                    {
+                      "name": "pc4",
+                      "expression": "`pc4`"
+                    },
+                    {
+                      "name": "airbnb_avg_annual_rev_eur",
+                      "expression": "`airbnb_avg_annual_rev_eur`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Top 20 Postcodes by Airbnb Revenue",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "pc4",
+                  "displayName": "Postcode",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "airbnb_avg_annual_rev_eur",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "EUR",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 0
+                    },
+                    "abbreviation": "none"
+                  },
+                  "displayName": "Airbnb Avg Annual Revenue (EUR)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "pc4",
+                  "displayName": "Postcode",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "94c55b31",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "230777ac",
+                  "fields": [
+                    {
+                      "name": "pc4",
+                      "expression": "`pc4`"
+                    },
+                    {
+                      "name": "rentals_avg_annual_rev_eur",
+                      "expression": "`rentals_avg_annual_rev_eur`"
+                    },
+                    {
+                      "name": "airbnb_avg_annual_rev_eur",
+                      "expression": "`airbnb_avg_annual_rev_eur`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "rentals_avg_annual_rev_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "airbnb_avg_annual_rev_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "pc4"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "388e5086",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3de38d1c",
+                  "fields": [
+                    {
+                      "name": "data_coverage",
+                      "expression": "`data_coverage`"
+                    },
+                    {
+                      "name": "pc4_count",
+                      "expression": "`pc4_count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Postcode Count by Data Coverage",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "data_coverage",
+                  "displayName": "Data Coverage",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "pc4_count",
+                  "format": {
+                    "type": "number-plain",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 0
+                    },
+                    "abbreviation": "none"
+                  },
+                  "displayName": "Postcode Count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "data_coverage",
+                  "displayName": "Data Coverage",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

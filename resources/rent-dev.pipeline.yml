@@ -1,0 +1,11 @@
+resources:
+  pipelines:
+    rent_dev:
+      name: rent-dev
+      libraries:
+        - glob:
+            include: ../src/rent-dev/transformations/**
+      serverless: true
+      catalog: workspace
+      schema: ${workspace.current_user.short_name}
+      root_path: ../src/rent-dev
